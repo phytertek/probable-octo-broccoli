@@ -1,5 +1,5 @@
 const SSK = process.env.SSK;
-const stripe = require('stripe')('sk_test_nehQ16RVy8FjjBTDnKPNvpSP');
+const stripe = require('stripe')(SSK);
 
 const { sendUserError } = require('enmapi/common/errors');
 
