@@ -3,7 +3,7 @@ const stripe = require('stripe')('sk_test_nehQ16RVy8FjjBTDnKPNvpSP');
 
 const { sendUserError } = require('enmapi/common/errors');
 
-const auth = new strip.AuthInfo();
+const auth = new stripAuthInfo();
 module.exports = {
   getStripeAuth: async (req, res) => {
     try {
