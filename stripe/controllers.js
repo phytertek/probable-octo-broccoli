@@ -3,7 +3,7 @@ const stripe = require('stripe')(SSK);
 
 const { sendUserError } = require('enmapi/common/errors');
 
-class stripAuthInfo {
+class stripeAuthInfo {
   constructor(code, scope, state) {
     this._code = '';
     this._scope = '';
@@ -67,7 +67,7 @@ class stripAuthInfo {
   }
 }
 
-const auth = new stripAuthInfo();
+const auth = new stripeAuthInfo();
 module.exports = {
   getStripeAuth: async (req, res) => {
     try {
@@ -75,10 +75,10 @@ module.exports = {
       const scope = req.query.scope;
       const state = req.query.state;
       auth.setAuthSuccess(code, scope, state);
-      res.sendStatus(200);
+      res.json(auth);
     } catch (error) {
       auth.setAuthError(error.error, error.error_description, error.state);
-      // sendUserError(error, res);
+      sendUserError(error, res);
     }
   },
   getStripePeekAuth: async (req, res) => {
