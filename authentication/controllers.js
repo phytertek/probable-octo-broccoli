@@ -43,7 +43,20 @@ module.exports = {
         user.activeTokens.push(token._id);
         await user.save();
       }
-      res.json({ token: token.token, email });
+      res.json({
+        token: token.token,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        mobile: user.mobile,
+        street: user.street,
+        city: user.city,
+        state: user.state,
+        postalCode: user.postalCode,
+        country: user.country,
+        isDonor: user.isDonor,
+        isFundraiser: user.isFundraiser
+      });
     } catch (error) {
       sendUserError(error, res);
     }

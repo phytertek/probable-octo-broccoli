@@ -15,9 +15,14 @@ module.exports = {
     Schema: {
       donor: {
         type: ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
       },
-      amount: { type: Number, required: true }
+      amount: { type: Number, required: true },
+      fundraiser: {
+        type: ObjectId,
+        ref: 'Fundraiser'
+      }
     }
   }
 };
