@@ -3,6 +3,70 @@ const stripe = require('stripe')('sk_test_nehQ16RVy8FjjBTDnKPNvpSP');
 
 const { sendUserError } = require('enmapi/common/errors');
 
+class stripAuthInfo {
+  constructor(code, scope, state) {
+    this._code = '';
+    this._scope = '';
+    this._state = '';
+    this._error = '';
+    this._error_description = '';
+  }
+  setAuthSuccess(code, scope, state) {
+    this._code = code;
+    this._scope = scope;
+    this._state = state;
+  }
+  setAuthError(error, error_description, state) {
+    this._error = error;
+    this._error_description = error_description;
+    this._state = state;
+  }
+  get info() {
+    return {
+      code: this._code,
+      scope: this._scope,
+      state: this._state,
+      error: this._error,
+      error_description: this._error_description
+    };
+  }
+  get state() {
+    return this._state;
+  }
+  set state(state) {
+    this._state = state;
+    return this._state;
+  }
+  get code() {
+    return this._code;
+  }
+  set code(code) {
+    this._code = code;
+    return this._code;
+  }
+  get scope() {
+    return this._scope;
+  }
+  set scope(scope) {
+    this._scope = scope;
+    return this._scope;
+  }
+  get error() {
+    return this._error;
+  }
+  set error(error) {
+    this._error = error;
+    return this._error;
+  }
+  get error_description() {
+    return this._error_description;
+  }
+  set error_description(error_description) {
+    this._error_description = error_description;
+    return this._error_description;
+  }
+}
+
 const auth = new stripAuthInfo();
 module.exports = {
   getStripeAuth: async (req, res) => {
