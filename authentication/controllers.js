@@ -45,15 +45,10 @@ module.exports = {
       }
       res.json({
         token: token.token,
+        _id: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        mobile: user.mobile,
-        street: user.street,
-        city: user.city,
-        state: user.state,
-        postalCode: user.postalCode,
-        country: user.country,
         isDonor: user.isDonor,
         isFundraiser: user.isFundraiser
       });

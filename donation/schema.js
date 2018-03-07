@@ -3,6 +3,13 @@ const { ObjectId } = require('enmapi/database/utils').Types;
 module.exports = {
   User: {
     Schema: {
+      isDonor: {
+        type: Boolean,
+        default: false
+      },
+      donorAcct: {
+        type: Object
+      },
       donations: [
         {
           type: ObjectId,
