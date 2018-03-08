@@ -34,6 +34,10 @@ module.exports = {
     try {
       const { code } = req.body;
       requireFields({ code });
+      console.log(
+        '>>>>>>>>>>>>>>>>>>>>> CODE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n',
+        code
+      );
       const newStripeAcct = await axios.post(
         'https://connect.stripe.com/oauth/token',
         {
