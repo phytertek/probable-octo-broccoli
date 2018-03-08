@@ -44,7 +44,7 @@ module.exports = {
         console.log('>>>> TRANSFER AMOUNT >>>>', d.amount * 100);
         console.log(
           '>>>> COMMISSION AMOUNT >>>>',
-          d.amount * 100 - commission(d.amount)
+          typeof (d.amount * 100 - commission(d.amount))
         );
         return stripe.transfers.create({
           amount: d.amount * 100,
