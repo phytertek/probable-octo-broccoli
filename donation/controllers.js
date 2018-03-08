@@ -56,8 +56,8 @@ module.exports = {
         stripe.transfers.create({
           amount: d.amount * 100 - commission(d.amount),
           currency: 'usd',
-          source: user.donorAcct.default_source,
-          destination: fundraiserAccts[d.owner]
+          destination: fundraiserAccts[d.owner],
+          transfer_group
         })
       );
       user.donations = [...user.donations, ...newDonations];
