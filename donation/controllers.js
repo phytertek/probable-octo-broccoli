@@ -23,6 +23,7 @@ module.exports = {
       const transfer_group = `${user._id}:${Date.now()}`;
       const donationsTotal =
         newDonations.reduce((t, d) => t + d.amount, 0) * 100;
+      console.log('>>> DONATION TOTAL >>>>>', donationsTotal);
       const charge = await stripe.charges.create({
         amount: donationsTotal,
         currency: 'usd',
@@ -39,8 +40,13 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
-      const transfers = newDonations.map(d =>
-        stripe.transfers.create({
+      const transfers = newDonations.map(d => {
+        console.log('>>>> TRANSFER AMOUNT >>>>', d.amount * 100);
+        console.log(
+          '>>>> COMMISSION AMOUNT >>>>',
+          d.amount * 100 - commission(d.amount)
+        );
+        return stripe.transfers.create({
           amount: d.amount * 100,
           currency: 'usd',
           destination: {
@@ -48,8 +54,8 @@ module.exports = {
             account: fundraiserAccts[d.owner]
           },
           transfer_group
-        })
-      );
+        });
+      });
       user.donations = [...user.donations, ...newDonations];
       await user.save();
       await Promise.all(transfers);
