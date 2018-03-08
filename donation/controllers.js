@@ -48,7 +48,7 @@ module.exports = {
           currency: 'usd',
           application_fee: commission(d.amount),
           source: user.donorAcct.default_source,
-          destination: fundraiserAccts[d.owner],
+          destination: { account: fundraiserAccts[d.owner] },
           customer: user.donorAcct.id
         })
       );
