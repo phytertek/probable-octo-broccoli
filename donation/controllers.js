@@ -34,9 +34,11 @@ module.exports = {
         stripe.charges.create({
           amount: d.amount,
           currency: 'usd',
-          application_fee: commission(d.amount),
           source: token.id,
-          destination: { account: fundraiserAccts[d.owner] },
+          destination: {
+            amount: d.amount - commission(d.amount),
+            account: fundraiserAccts[d.owner]
+          },
           transfer_group
         })
       );
