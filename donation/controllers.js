@@ -10,6 +10,7 @@ module.exports = {
   postCreateDonation: async (req, res) => {
     try {
       const acct = await stripe.accounts.retrieve();
+      console.log('>>>>>>>>>>> ACCOUNT>>>>>> ', acct);
       const { token, donations } = req.body;
       requireFields({ token, donations });
       const user = req.unsafeUser;
