@@ -42,7 +42,7 @@ module.exports = {
         'https://connect.stripe.com/oauth/token',
         {
           client_secret: SSK.toString(),
-          code: code.toString,
+          code: code.toString(),
           grant_type: 'authorization_code'
         }
       );
