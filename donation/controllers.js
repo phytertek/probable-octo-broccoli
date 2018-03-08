@@ -41,19 +41,16 @@ module.exports = {
         return fundRaiserAcctMap;
       }, {});
       const transfers = newDonations.map(d => {
-        console.log('>>>> TRANSFER AMOUNT >>>>', d.amount * 100);
-        console.log(
-          '>>>> COMMISSION AMOUNT >>>>',
-          typeof (d.amount * 100 - commission(d.amount))
-        );
+        const transfer_amount = Number(d.amount * 100);
+        const minus_commission = Number();
         return stripe.transfers.create({
-          amount: d.amount * 100,
+          amount: transfer_amount,
           currency: 'usd',
           destination: {
-            amount: Number(d.amount * 100 - commission(d.amount)),
+            amount: minus_commission,
             account: fundraiserAccts[d.owner]
           },
-          transfer_group
+          transfer_group: transfer_group
         });
       });
       user.donations = [...user.donations, ...newDonations];
