@@ -42,10 +42,10 @@ module.exports = {
       }, {});
       const transfers = newDonations.map(d => {
         const transfer_amount = Number(d.amount * 100);
-        const commission = Number(commission(d.amount));
+        const commission_amount = Number(commission(d.amount));
         return stripe.transfers.create({
           amount: transfer_amount,
-          application_fee: commission,
+          application_fee: commission_amount,
           currency: 'usd',
           destination: {
             account: fundraiserAccts[d.owner]
