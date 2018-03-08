@@ -62,8 +62,8 @@ module.exports = {
       );
       user.donations = [...user.donations, ...newDonations];
       await user.save();
-      await Promise.all(charges);
-      res.json(charges);
+      await Promise.all(transfers);
+      res.json({ charg, transfers });
     } catch (error) {
       sendUserError(error, res);
     }
