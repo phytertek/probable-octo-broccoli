@@ -5,7 +5,7 @@ const SSK = process.env.SSK;
 const stripe = require('stripe')(SSK);
 
 const COMMISION_PERCENTAGE = 5;
-const commission = amount => amount * COMMISION_PERCENTAGE;
+const commission = amount => amount * COMMISION_PERCENTAGE / 100;
 module.exports = {
   postCreateDonation: async (req, res) => {
     try {
@@ -23,9 +23,10 @@ module.exports = {
       const transfer_group = `${user._id}:${Date.now()}`;
       const donationsTotal =
         newDonations.reduce((t, d) => t + d.amount, 0) * 100;
-      console.log('>>> DONATION TOTAL >>>>>', donationsTotal);
+      const commission_amount = Number(commission(donationsTotal));
       const charge = await stripe.charges.create({
         amount: donationsTotal,
+        application_fee: commission_amount,
         currency: 'usd',
         source: token.id,
         transfer_group
