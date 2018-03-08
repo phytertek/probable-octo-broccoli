@@ -25,6 +25,8 @@ module.exports = {
         goal,
         owner: req.safeUser._id
       }).save();
+      req.unsafeUser.fundraisers.push(fundraiser._id);
+      await req.unsafeUser.save();
       res.json(fundraiser);
     } catch (error) {
       sendUserError(error, res);
