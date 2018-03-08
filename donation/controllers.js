@@ -45,13 +45,17 @@ module.exports = {
         return fundRaiserAcctMap;
       }, {});
       const charges = newDonations.map(d =>
-        stripe.charges.create({
-          amount: d.amount * 100,
-          currency: 'usd',
-          customer: user.donorAcct.id,
-          source: user.donorAcct.default_source,
-          destination: fundraiserAccts[d.owner]
-        })
+        stripe.charges.create(
+          {
+            amount: d.amount * 100,
+            application_fee: 123,
+            currency: 'usd',
+            customer: user.donorAcct.id,
+            source: user.donorAcct.default_source,
+            destination: fundraiserAccts[d.owner]
+          },
+          { stripe_account: fundraiserAccts[d.owner] }
+        )
       );
       user.donations = [...user.donations, ...newDonations];
       await user.save();
