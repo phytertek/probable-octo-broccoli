@@ -52,9 +52,8 @@ module.exports = {
           customer: user.donorAcct.id
         })
       );
-      user.donations = [...user.donations, ...newDonations.map(d => d._id)];
+      user.donations = [...user.donations, ...newDonations];
       await user.save();
-      await newDonations.save();
       await Promise.all(charges);
       res.json(charges);
     } catch (error) {
