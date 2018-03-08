@@ -47,7 +47,6 @@ module.exports = {
           amount: transfer_amount,
           currency: 'usd',
           destination: {
-            amount: minus_commission,
             account: fundraiserAccts[d.owner]
           },
           transfer_group: transfer_group
