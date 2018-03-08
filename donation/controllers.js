@@ -13,18 +13,6 @@ module.exports = {
       requireFields({ token, donations });
       const user = req.unsafeUser;
       // Create stripe customer if does not exist
-      if (!user.isDonor) {
-        ['firstName', 'lastName'].forEach(field => {
-          if (req.body[field]) user[field] = req.body[field];
-        });
-        const customer = await stripe.customers.create({
-          description: 'Donor',
-          source: token.id,
-          email: user.email
-        });
-        user.donorAcct = customer;
-        user.isDonor = true;
-      }
       const newDonations = donations.map(d => {
         return new Donation({
           amount: d.amount,
@@ -38,7 +26,7 @@ module.exports = {
       const charge = await stripe.charges.create({
         amount: donationsTotal,
         currency: 'usd',
-        source: user.donorAcct.default_source,
+        source: token.id,
         transfer_group
       });
       const fundOwners = donations.map(d => {
@@ -51,8 +39,8 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
-      const charges = newDonations.map(d =>
-        stripe.charges.create({
+      const transfers = newDonations.map(d =>
+        stripe.transfers.create({
           amount: d.amount * 100,
           currency: 'usd',
           destination: {
@@ -64,8 +52,8 @@ module.exports = {
       );
       user.donations = [...user.donations, ...newDonations];
       await user.save();
-      await Promise.all(charges);
-      res.json(charges);
+      await Promise.all(transfers);
+      res.json({ charges, transfers });
     } catch (error) {
       sendUserError(error, res);
     }
