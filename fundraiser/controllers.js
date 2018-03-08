@@ -36,10 +36,6 @@ module.exports = {
     try {
       const { code } = req.body;
       requireFields({ code });
-      console.log(
-        '>>>>>>>>>>>>>>>>>>>>> CODE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n',
-        code
-      );
       const newStripeAcct = await axios.post(
         'https://connect.stripe.com/oauth/token',
         {
@@ -48,7 +44,6 @@ module.exports = {
           grant_type: 'authorization_code'
         }
       );
-
       const user = req.unsafeUser;
       user.fundraiserAcct = newStripeAcct.data;
       user.isFundraiser = true;
@@ -61,27 +56,27 @@ module.exports = {
   }
 };
 
-const createMockup = async () => {
-  try {
-    const u = await User.findOne({ email: 'ryan.phytertek@gmail.com' });
-    const mockData = require('./MOCK_DATA (10).json');
-    const ownedMockData = mockData.map(e => {
-      e.owner = u._id;
-      e.title = `${e.title2} ${e.title1}s`;
-      delete e.title1;
-      delete e.title2;
-      delete e.title3;
-      delete e.title4;
-      return new Fundraiser(e);
-    });
-    const frids = ownedMockData.map(e => e._id);
-    u.fundraisers = frids;
-    await u.save();
-    const allInserts = await Fundraiser.collection.insert(ownedMockData);
-    console.log(allInserts);
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const createMockup = async () => {
+//   try {
+//     const u = await User.findOne({ email: 'ryan.phytertek@gmail.com' });
+//     const mockData = require('./MOCK_DATA (10).json');
+//     const ownedMockData = mockData.map(e => {
+//       e.owner = u._id;
+//       e.title = `${e.title2} ${e.title1}s`;
+//       delete e.title1;
+//       delete e.title2;
+//       delete e.title3;
+//       delete e.title4;
+//       return new Fundraiser(e);
+//     });
+//     const frids = ownedMockData.map(e => e._id);
+//     u.fundraisers = frids;
+//     await u.save();
+//     const allInserts = await Fundraiser.collection.insert(ownedMockData);
+//     console.log(allInserts);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-createMockup();
+// createMockup();
