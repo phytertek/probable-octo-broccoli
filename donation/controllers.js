@@ -9,6 +9,7 @@ const commission = amount => amount * COMMISION_PERCENTAGE;
 module.exports = {
   postCreateDonation: async (req, res) => {
     try {
+      const acct = await stripe.accounts.retrieve();
       const { token, donations } = req.body;
       requireFields({ token, donations });
       const user = req.unsafeUser;
