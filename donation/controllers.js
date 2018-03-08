@@ -48,10 +48,13 @@ module.exports = {
         stripe.charges.create(
           {
             amount: d.amount * 100,
-            application_fee: 123,
             currency: 'usd',
             customer: user.donorAcct.id,
-            source: user.donorAcct.default_source
+            source: user.donorAcct.default_source,
+            destination: {
+              amount: d.amount * 100 - 123,
+              account: fundraiserAccts[d.owner]
+            }
           },
           { stripe_account: fundraiserAccts[d.owner] }
         )
