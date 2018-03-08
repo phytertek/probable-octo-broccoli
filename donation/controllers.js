@@ -26,7 +26,6 @@ module.exports = {
       const commission_amount = Number(commission(donationsTotal));
       const charge = await stripe.charges.create({
         amount: donationsTotal,
-        application_fee: commission_amount,
         currency: 'usd',
         source: token.id,
         transfer_group
@@ -47,9 +46,8 @@ module.exports = {
         return stripe.transfers.create({
           amount: transfer_amount,
           currency: 'usd',
-          destination: {
-            account: fundraiserAccts[d.owner]
-          },
+          source_transaction: charge.id,
+          destination: fundraiserAccts[d.owner],
           transfer_group: transfer_group
         });
       });
