@@ -50,7 +50,7 @@ module.exports = {
           amount: d.amount * 100,
           currency: 'usd',
           destination: {
-            amount: d.amount * 100 - commission(d.amount),
+            amount: Number(d.amount * 100 - commission(d.amount)),
             account: fundraiserAccts[d.owner]
           },
           transfer_group
