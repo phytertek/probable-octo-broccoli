@@ -33,7 +33,7 @@ module.exports = {
           donor: user._id
         });
       });
-      const donationsTotal = newDonations.reduce((t, d) => t + d.amount) * 100;
+      const donationsTotal = newDonations.reduce((t, d) => t + d.amount);
       const fundOwners = donations.map(d => {
         return d.fundraiser.owner;
       });
@@ -44,12 +44,18 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
-      const charges = newDonations.map(d =>
-        stripe.charges.create({
-          amount: d.amount * 100,
-          application_fee: commission(d.amount),
+      const transfer_group = `${user._id}:${Date.now()}`;
+      const charge = await stripe.charges.create({
+        amount: donationsTotal * 100,
+        currency: 'usd',
+        customer: user.donorAcct.id,
+        source: user.donorAcct.default_source,
+        transfer_group
+      });
+      const transfers = newDonations.map(d =>
+        stripe.transfers.create({
+          amount: d.amount * 100 - commission(d.amount),
           currency: 'usd',
-          customer: user.donorAcct.id,
           source: user.donorAcct.default_source,
           destination: fundraiserAccts[d.owner]
         })
