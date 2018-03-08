@@ -10,7 +10,6 @@ module.exports = {
   postCreateDonation: async (req, res) => {
     try {
       const acct = await stripe.accounts.retrieve();
-      console.log('>>>>>>>>>>> ACCOUNT>>>>>> ', acct);
       const { token, donations } = req.body;
       requireFields({ token, donations });
       const user = req.unsafeUser;
@@ -34,7 +33,7 @@ module.exports = {
           donor: user._id
         });
       });
-      const donationsTotal = newDonations.reduce((t, d) => t + d.amount, 0);
+      const donationsTotal = newDonations.reduce((t, d) => t + d.amount) * 100;
       const fundOwners = donations.map(d => {
         return d.fundraiser.owner;
       });
@@ -45,27 +44,19 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
-      const transfer_group = `${user._id}:${Date.now()}`;
-      const charge = await stripe.charges.create({
-        amount: donationsTotal * 100,
-        currency: 'usd',
-        customer: user.donorAcct.id,
-        source: user.donorAcct.default_source,
-        destination: acct.id,
-        transfer_group
-      });
-      const transfers = newDonations.map(d =>
-        stripe.transfers.create({
-          amount: d.amount * 100 - commission(d.amount),
+      const charges = newDonations.map(d =>
+        stripe.charges.create({
+          amount: d.amount * 100,
           currency: 'usd',
-          destination: fundraiserAccts[d.owner],
-          transfer_group
+          customer: user.donorAcct.id,
+          source: user.donorAcct.default_source,
+          destination: fundraiserAccts[d.owner]
         })
       );
       user.donations = [...user.donations, ...newDonations];
       await user.save();
-      await Promise.all(transfers);
-      res.json({ charg, transfers });
+      await Promise.all(charges);
+      res.json(charges);
     } catch (error) {
       sendUserError(error, res);
     }
