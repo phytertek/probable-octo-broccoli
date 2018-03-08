@@ -47,11 +47,12 @@ module.exports = {
         }
       );
 
-      // const user = req.unsafeUser;
-      // user.fundraiserAcct = newStripeAcct;
-      // user.isFundraiser = true;
-      // await user.save();
-      res.json({ message: 'Hello' });
+      const user = req.unsafeUser;
+      user.fundraiserAcct = newStripeAcct.data;
+      user.isFundraiser = true;
+      await user.save();
+
+      res.json(newStripeAcct.data);
     } catch (error) {
       sendUserError(error, res);
     }
