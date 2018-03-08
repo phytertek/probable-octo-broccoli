@@ -50,10 +50,7 @@ module.exports = {
           currency: 'usd',
           customer: user.donorAcct.id,
           source: user.donorAcct.default_source,
-          destination: {
-            amount: d.amount * 100 - commission(d.amount),
-            account: fundraiserAccts[d.owner]
-          }
+          destination: fundraiserAccts[d.owner]
         })
       );
       user.donations = [...user.donations, ...newDonations];
