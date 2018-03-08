@@ -44,21 +44,30 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
-      const charges = newDonations.map(d =>
-        stripe.charges.create(
-          {
-            amount: d.amount * 100,
-            currency: 'usd',
-            source: token.id,
-            destination: fundraiserAccts[d.owner]
-          },
-          { stripe_account: fundraiserAccts[d.owner] }
-        )
+
+      const charge = await stripe.charges.create(
+        {
+          amount: d.amount * 100,
+          currency: 'usd',
+          source: token.id
+        },
+        { stripe_account: acct.id }
       );
+      // const charges = newDonations.map(d =>
+      //   stripe.charges.create(
+      //     {
+      //       amount: d.amount * 100,
+      //       currency: 'usd',
+      //       source: token.id,
+      //       destination: fundraiserAccts[d.owner]
+      //     },
+      //     { stripe_account: fundraiserAccts[d.owner] }
+      //   )
+      // );
       user.donations = [...user.donations, ...newDonations];
       await user.save();
-      await Promise.all(charges);
-      res.json(charges);
+      // await Promise.all(charges);
+      res.json(charge);
     } catch (error) {
       sendUserError(error, res);
     }
