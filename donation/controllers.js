@@ -5,7 +5,7 @@ const SSK = process.env.SSK;
 const stripe = require('stripe')(SSK);
 
 const COMMISION_PERCENTAGE = 5;
-const commission = amount => amount * COMMISION_PERCENTAGE / 100;
+const commission = amount => amount * COMMISION_PERCENTAGE;
 module.exports = {
   postCreateDonation: async (req, res) => {
     try {
