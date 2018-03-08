@@ -47,6 +47,7 @@ module.exports = {
       const charges = newDonations.map(d =>
         stripe.charges.create({
           amount: d.amount * 100,
+          application_fee: commission(d.amount),
           currency: 'usd',
           customer: user.donorAcct.id,
           source: user.donorAcct.default_source,
