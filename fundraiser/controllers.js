@@ -46,11 +46,12 @@ module.exports = {
           grant_type: 'authorization_code'
         }
       );
-      const user = req.unsafeUser;
-      user.fundraiserAcct = newStripeAcct;
-      user.isFundraiser = true;
-      await user.save();
-      res.json({ success: true });
+
+      // const user = req.unsafeUser;
+      // user.fundraiserAcct = newStripeAcct;
+      // user.isFundraiser = true;
+      // await user.save();
+      res.json(newStripeAcct);
     } catch (error) {
       sendUserError(error, res);
     }
