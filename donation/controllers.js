@@ -33,7 +33,7 @@ module.exports = {
           donor: user._id
         });
       });
-      const donationsTotal = newDonations.reduce((t, d) => t + d.amount);
+      const donationsTotal = newDonations.reduce((t, d) => t + d.amount, 0);
       const fundOwners = donations.map(d => {
         return d.fundraiser.owner;
       });
