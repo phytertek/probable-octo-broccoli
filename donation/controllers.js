@@ -51,6 +51,7 @@ module.exports = {
         currency: 'usd',
         customer: user.donorAcct.id,
         source: user.donorAcct.default_source,
+        destination: acct.id,
         transfer_group
       });
       const transfers = newDonations.map(d =>
