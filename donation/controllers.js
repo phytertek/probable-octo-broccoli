@@ -45,7 +45,6 @@ module.exports = {
         const commission_amount = Number(commission(d.amount));
         return stripe.transfers.create({
           amount: transfer_amount,
-          application_fee: commission_amount,
           currency: 'usd',
           destination: {
             account: fundraiserAccts[d.owner]
