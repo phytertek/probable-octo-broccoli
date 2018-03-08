@@ -49,8 +49,7 @@ module.exports = {
           {
             amount: d.amount * 100,
             currency: 'usd',
-            customer: user.donorAcct.id,
-            source: user.donorAcct.default_source,
+            source: token.id,
             destination: fundraiserAccts[d.owner]
           },
           { stripe_account: fundraiserAccts[d.owner] }
