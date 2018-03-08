@@ -42,7 +42,7 @@ module.exports = {
       }, {});
       const transfers = newDonations.map(d => {
         const transfer_amount = Number(d.amount * 100);
-        const minus_commission = Number();
+        const minus_commission = Number(d.amount * 100 - commission(d.amount));
         return stripe.transfers.create({
           amount: transfer_amount,
           currency: 'usd',
