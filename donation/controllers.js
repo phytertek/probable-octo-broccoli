@@ -29,13 +29,15 @@ module.exports = {
         fundRaiserAcctMap[owner._id] = owner.fundraiserAcct.stripe_user_id;
         return fundRaiserAcctMap;
       }, {});
+      const transfer_group = `${user._id}${Date.now()}`;
       const charges = newDonations.map(d =>
         stripe.charges.create({
           amount: d.amount,
           currency: 'usd',
           application_fee: commission(d.amount),
           source: token.id,
-          destination: { account: fundraiserAccts[d.owner] }
+          destination: { account: fundraiserAccts[d.owner] },
+          transfer_group
         })
       );
       user.donations = [...user.donations, ...newDonations];
