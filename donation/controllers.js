@@ -22,7 +22,7 @@ module.exports = {
       });
       const transfer_group = `${user._id}:${Date.now()}`;
       const donationsTotal =
-        newDonations.reduce((t, d) => (t += d.amount)) * 100;
+        newDonations.reduce((t, d) => t + d.amount, 0) * 100;
       const charge = await stripe.charges.create({
         amount: donationsTotal,
         currency: 'usd',
