@@ -47,7 +47,8 @@ module.exports = {
         stripe.charges.create({
           amount: d.amount * 100,
           currency: 'usd',
-          customer: user.donorAcct,
+          customer: user.donorAcct.id,
+          source: user.donorAcct.default_source,
           destination: {
             amount: d.amount * 100 - commission(d.amount),
             account: fundraiserAccts[d.owner]
