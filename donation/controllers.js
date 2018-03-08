@@ -14,18 +14,18 @@ module.exports = {
       requireFields({ token, donations });
       const user = req.unsafeUser;
       // Create stripe customer if does not exist
-      if (!user.isDonor) {
-        ['firstName', 'lastName'].forEach(field => {
-          if (req.body[field]) user[field] = req.body[field];
-        });
-        const customer = await stripe.customers.create({
-          description: 'Donor',
-          source: token.id,
-          email: user.email
-        });
-        user.donorAcct = customer;
-        user.isDonor = true;
-      }
+      // if (!user.isDonor) {
+      //   ['firstName', 'lastName'].forEach(field => {
+      //     if (req.body[field]) user[field] = req.body[field];
+      //   });
+      //   const customer = await stripe.customers.create({
+      //     description: 'Donor',
+      //     source: token.id,
+      //     email: user.email
+      //   });
+      //   user.donorAcct = customer;
+      //   user.isDonor = true;
+      // }
       const newDonations = donations.map(d => {
         return new Donation({
           amount: d.amount,
