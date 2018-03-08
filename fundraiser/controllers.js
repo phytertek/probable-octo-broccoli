@@ -38,14 +38,14 @@ module.exports = {
         '>>>>>>>>>>>>>>>>>>>>> CODE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n',
         code
       );
-      // const newStripeAcct = await axios.post(
-      //   'https://connect.stripe.com/oauth/token',
-      //   {
-      //     client_secret: SSK,
-      //     code,
-      //     grant_type: 'authorization_code'
-      //   }
-      // );
+      const newStripeAcct = await axios.post(
+        'https://connect.stripe.com/oauth/token',
+        {
+          client_secret: SSK.toString(),
+          code: code.toString,
+          grant_type: 'authorization_code'
+        }
+      );
 
       // const user = req.unsafeUser;
       // user.fundraiserAcct = newStripeAcct;
