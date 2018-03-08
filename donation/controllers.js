@@ -51,8 +51,7 @@ module.exports = {
             application_fee: 123,
             currency: 'usd',
             customer: user.donorAcct.id,
-            source: user.donorAcct.default_source,
-            destination: fundraiserAccts[d.owner]
+            source: user.donorAcct.default_source
           },
           { stripe_account: fundraiserAccts[d.owner] }
         )
