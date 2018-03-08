@@ -7,6 +7,7 @@
     "start:dev": "nodemon index.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^1.0.3",
     "enmapi": "^1.1.12",
     "express-useragent": "^1.0.12",

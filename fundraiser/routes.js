@@ -1,4 +1,8 @@
-const { getAllFundraisers, postCreateFundraiser } = require('./controllers');
+const {
+  getAllFundraisers,
+  postCreateFundraiser,
+  postCreateFundraiserAcct
+} = require('./controllers');
 const { authorizeRoute } = require('enmapi/services').Authentication;
 module.exports = {
   '/fundraiser': {
@@ -6,7 +10,8 @@ module.exports = {
       '/all': getAllFundraisers
     },
     post: {
-      '/create': [authorizeRoute, postCreateFundraiser]
+      '/create': [authorizeRoute, postCreateFundraiser],
+      '/create-acct': [authorizeRoute, postCreateFundraiserAcct]
     }
   }
 };

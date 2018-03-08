@@ -6,16 +6,7 @@ module.exports = {
   postCreateDonor: async (req, res) => {
     try {
       console.log(req.body);
-      const fields = [
-        'firstName',
-        'lastName',
-        'mobile',
-        'street',
-        'city',
-        'state',
-        'postalCode',
-        'country'
-      ];
+      const fields = ['firstName', 'lastName'];
       const user = req.unsafeUser;
       fields.forEach(field => {
         if (req.body[field]) user[field] = req.body[field];
