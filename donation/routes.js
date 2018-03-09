@@ -1,5 +1,5 @@
 const { postCreateDonation } = require('./controllers');
-const { authorizeRoute } = require('enmapi/services').Authentication; // Requires auth template component
+const { authorizeRoute } = require('enmapi/services').Authentication;
 
 module.exports = {
   '/donation': {
