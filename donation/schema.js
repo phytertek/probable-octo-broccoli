@@ -29,6 +29,10 @@ module.exports = {
       fundraiser: {
         type: ObjectId,
         ref: 'Fundraiser'
+      },
+      fundraiserOwner: {
+        type: ObjectId,
+        ref: 'User'
       }
     }
   }

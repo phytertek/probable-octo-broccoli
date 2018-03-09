@@ -1,7 +1,7 @@
 const { User, Fundraiser } = require('enmapi/database');
 const { sendUserError } = require('enmapi/common/errors');
 const { requireFields } = require('enmapi/common/validation');
-const SSK = process.env.SSK;
+const SSK = 'sk_test_nehQ16RVy8FjjBTDnKPNvpSP'; // process.env.SSK;
 const SCID = process.env.SCID;
 const stripe = require('stripe')(SSK);
 const axios = require('axios');
@@ -39,8 +39,8 @@ module.exports = {
       const newStripeAcct = await axios.post(
         'https://connect.stripe.com/oauth/token',
         {
-          client_secret: SSK.toString(),
-          code: code.toString(),
+          client_secret: SSK,
+          code: code,
           grant_type: 'authorization_code'
         }
       );
@@ -56,27 +56,43 @@ module.exports = {
   }
 };
 
-// const createMockup = async () => {
-//   try {
-//     const u = await User.findOne({ email: 'ryan.phytertek@gmail.com' });
-//     const mockData = require('./MOCK_DATA (10).json');
-//     const ownedMockData = mockData.map(e => {
-//       e.owner = u._id;
-//       e.title = `${e.title2} ${e.title1}s`;
-//       delete e.title1;
-//       delete e.title2;
-//       delete e.title3;
-//       delete e.title4;
-//       return new Fundraiser(e);
-//     });
-//     const frids = ownedMockData.map(e => e._id);
-//     u.fundraisers = frids;
-//     await u.save();
-//     const allInserts = await Fundraiser.collection.insert(ownedMockData);
-//     console.log(allInserts);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+const createMockup = async () => {
+  try {
+    const association = [
+      'Association',
+      'Club',
+      'Cooperative',
+      'Legue',
+      'Society',
+      'Fund',
+      'Organization',
+      'Union',
+      'Alliance'
+    ];
+    let lastUsed;
+    const randAssociations = () => {
+      const nextRand =
+        association[Math.floor(Math.random() * association.length)];
+      if (nextRand !== lastUsed) {
+        lastUsed = nextRand;
+        return nextRand;
+      } else return randAssociations();
+    };
+    const u = await User.findOne({ email: 'ryan.phytertek@gmail.com' });
+    const mockData = require('./MOCK_DATA (10).json');
+    const ownedMockData = mockData.map(e => {
+      e.owner = u._id;
+      e.title = `${e.title2} ${e.title1}s ${randAssociations()}`;
+      return new Fundraiser(e);
+    });
+    const frids = ownedMockData.map(e => e._id);
+    u.fundraisers = frids;
+    await u.save();
+    const allInserts = await Fundraiser.collection.insert(ownedMockData);
+    console.log(allInserts);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // createMockup();
