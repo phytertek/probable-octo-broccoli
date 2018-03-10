@@ -6,8 +6,6 @@ const SCID = process.env.SCID;
 const stripe = require('stripe')(SSK);
 const axios = require('axios');
 
-require('./mockup2')(User, Fundraiser);
-
 module.exports = {
   getAllFundraisers: async (req, res) => {
     try {
