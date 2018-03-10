@@ -44,11 +44,9 @@ module.exports = {
           grant_type: 'authorization_code'
         }
       );
-      const user = req.unsafeUser;
-      user.fundraiserAcct = newStripeAcct.data;
-      user.isFundraiser = true;
-      await user.save();
-
+      req.unsafeUser.fundraiserAcct = newStripeAcct.data;
+      req.unsafeUser.isFundraiser = true;
+      await req.unsafeUser.save();
       res.json(newStripeAcct.data);
     } catch (error) {
       sendUserError(error, res);
