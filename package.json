@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": false,
   "scripts": {
+    "push:heroku":
+      "git add . && git commit -m 'update server build' && git push origin master",
     "start": "node index.js",
     "start:dev": "nodemon index.js"
   },
