@@ -33,9 +33,10 @@ module.exports = {
           donor: user._id
         });
       });
-      const donationsTotal =
-        newDonations.reduce((total, donation) => total + donation.amount, 0) *
-        100;
+      const donationsTotal = newDonations.reduce(
+        (total, donation) => total + donation.amount,
+        0
+      );
       const fundOwners = donations.map(donation => {
         return donation.fundraiser.owner;
       });
@@ -47,13 +48,15 @@ module.exports = {
         return fundRaiserAcctMap;
       }, {});
 
-      const COMMISION_PERCENTAGE = 5;
-      const commission = amount => amount * COMMISION_PERCENTAGE;
+      // remove decimals from amounts
+      const removeDec = n => Math.round(n * 100);
+      const COMMISION_PERCENTAGE_POINTS = 5;
+      const commission = n => Math.floor(n * COMMISION_PERCENTAGE_POINTS);
 
-      // Trigger transfers via webhook on charge transaction complete or at set payout intervals -- Using immediate transfers here for demo purposes
+      // In Production, trigger transfers via webhook on charge transaction complete or at set payout intervals -- Using immediate transfers here for demo purposes
       const transfer_group = `${user._id}:${Date.now()}`;
       const charge = await stripe.charges.create({
-        amount: donationsTotal,
+        amount: removeDec(donationsTotal),
         currency: 'usd',
         source: user.donorAcct.default_source,
         customer: user.donorAcct.id,
@@ -61,7 +64,7 @@ module.exports = {
       });
       const transfers = newDonations.map(donation => {
         return stripe.transfers.create({
-          amount: donation.amount * 100 - commission(donation.amount),
+          amount: removeDec(donation.amount) - commission(donation.amount),
           currency: 'usd',
           destination: fundraiserAccts[donation.fundraiserOwner],
           transfer_group

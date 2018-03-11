@@ -3,7 +3,7 @@ const { authorizeRoute } = require('enmapi/services').Authentication;
 
 module.exports = {
   '/donation': {
-    middleware: [authorizeRoute], // enables authorization on all routes
+    middleware: [authorizeRoute],
     post: {
       '/create': postCreateDonation
     }

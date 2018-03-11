@@ -47,7 +47,7 @@ module.exports = {
       req.unsafeUser.fundraiserAcct = newStripeAcct.data;
       req.unsafeUser.isFundraiser = true;
       await req.unsafeUser.save();
-      res.json(newStripeAcct.data);
+      res.json({ success: true });
     } catch (error) {
       sendUserError(error, res);
     }

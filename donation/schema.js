@@ -25,7 +25,10 @@ module.exports = {
         ref: 'User',
         required: true
       },
-      amount: { type: Number, required: true },
+      amount: {
+        type: Number,
+        required: true
+      },
       fundraiser: {
         type: ObjectId,
         ref: 'Fundraiser'
